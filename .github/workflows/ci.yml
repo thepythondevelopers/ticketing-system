@@ -15,8 +15,7 @@ jobs:
         run: git stash
       - name: Taking Git Pull
         run: git pull
-      - name: Get Back the .env file
-        run: git stash pop
+
 
   Install_Dependencies:
     needs: Git_Pull
