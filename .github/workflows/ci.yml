@@ -1,0 +1,40 @@
+name: CI
+on: 
+  push:
+    branches:
+      - "main"
+
+jobs:
+  Git_Pull:
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /var/www/ticketing-system/
+    steps:
+      - name: Run Git stash
+        run: git stash
+      - name: Taking Git Pull
+        run: git pull
+      - name: Get Back the .env file
+        run: git stash pop
+
+  Install_Dependencies:
+    needs: Git_Pull
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /var/www/ticketing-system/
+    steps:
+      - name: run npm install
+        run: npm install
+
+  Deploy_Code:
+    needs: Install_Dependencies
+    runs-on: self-hosted
+    defaults:
+      run:
+        working-directory: /var/www/ticketing-system/
+    steps:
+      - name: Deploy the code
+        run: pm2 reload 0
+
