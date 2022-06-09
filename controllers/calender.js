@@ -29,3 +29,50 @@ exports.getCalenderData = (req,res)=>{
         return res.json(order);
     })    
 }
+
+exports.updateCalender = (req,res) =>{
+    id = req.params.id;
+    const errors = validationResult(req);
+  if(!errors.isEmpty()){
+      return res.status(400).json({
+          error : errors.array()
+      })
+  }
+  data = {
+    startDate : req.body.startDate,
+    endDate : req.body.endDate,
+    title : req.body.title,
+    notes : req.body.notes
+  }
+  Calender.findByIdAndUpdate(
+    {_id : id},
+    {$set : data},
+    (err,calender) => {
+        if(err){
+            return res.status(404).json({
+                error : err
+            })
+        
+        }
+
+        return res.json(calender);
+    }
+    )   
+}
+
+exports.deleteCalender = (req,res) =>{
+    let id = req.params.id;
+    Calender.deleteOne(
+        {_id : id},
+        (err,calender) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+    
+            return res.json({id : id});
+        }
+        )
+  }
