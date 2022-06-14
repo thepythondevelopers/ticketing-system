@@ -47,6 +47,7 @@ exports.updateCalender = (req,res) =>{
   Calender.findByIdAndUpdate(
     {_id : id},
     {$set : data},
+    {new: true},
     (err,calender) => {
         if(err){
             return res.status(404).json({

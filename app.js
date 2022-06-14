@@ -10,6 +10,7 @@ const cookieParser = require("cookie-parser");
 //Routes
 const calenderRoutes = require("./routes/calender");
 const sidebarRoutes = require("./routes/sidebar");
+const authRoutes = require("./routes/auth");
 
 //Connection
 mongoose.connect(process.env.DATABASE,{
@@ -31,6 +32,7 @@ app.use(cors());
 //My Routes
 app.use('/api',calenderRoutes);
 app.use('/api',sidebarRoutes);
+app.use('/api',authRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)
