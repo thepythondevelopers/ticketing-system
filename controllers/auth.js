@@ -1,11 +1,13 @@
 const User = require("../models/user");
+const UserToken = require("../models/userToken");
 const {validationResult} = require("express-validator");
 const bcrypt = require("bcrypt");
 const { v4: uuidv4 } = require('uuid');
 var jwt = require('jsonwebtoken');
 require('dotenv').config();
-
-
+const moment= require('moment') 
+const sendGridMail = require('@sendgrid/mail');
+sendGridMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 exports.signup =  (req,res)=>{
   
@@ -23,8 +25,7 @@ exports.signup =  (req,res)=>{
   }
 
   
-  User.create(user_data)
-  .then(async user => {
+  User.create(user_data).then(async user => {
 
     res.json({message : "Sign Up Successfully."
    
@@ -53,12 +54,20 @@ exports.signin = (req,res) =>{
    } else {
     bcrypt.compare(req.body.password, user.password, async function (err, result) {
       if (result == true) {
-          //create token
-          
-        var token = jwt.sign({ id: user.guid, access_group: user.access_group }, process.env.SECRET,{ expiresIn: '1d'  });
-
-
+          //create token          
+        var token = jwt.sign({ _id: user._id,email:user.email }, process.env.SECRET,{ expiresIn: '1d'  });
         user_email = user.email;
+
+        
+
+      await UserToken.create({token:token}).then( usertoken => {
+      }).catch(err => {
+        res.status(500).send({
+          message:
+            err.message || "Some error occurred."
+        });
+      });
+      await UserToken.deleteOne({ created_at:{$lte:moment().subtract(2, 'days').toDate()} });
 
         res.json({token,user:{user_email}});
       } else {
@@ -84,33 +93,38 @@ exports.signin = (req,res) =>{
             error : errors.array()
         })
     }
-    guid = uuid();
+    guid = uuidv4();
   token = guid.replace(/-/g,""); 
   
     content =  { 
       password_reset_token: token
     }
-    User.findOne({
-      where: {
-          email: req.body.email
-             }
-    }).then(function (user) {
+    User.findOne({email: req.body.email}).then(function  (user) {
      if (!user) {
         res.json({error:'User Not Found'});
      } else {
-
-    User.update(
-      content,
-      { where: { email: req.body.email }
-     }
-    )
-    .then(async data => {
-      
-      //url = process.env.BASE_URL+'api/confirm-password/'
-      url = 'http://udify.pamsar.com/reset-password/'+token
+      User.findOneAndUpdate(
+        {email: req.body.email},
+        {$set : content},
+        {new: true},
+        async (err,calender) =>  {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+            if(calender===null){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+          //url = process.env.BASE_URL+'api/confirm-password/'
+      url = 'http://localhost:800/reset-password/'+token
       try {
         await sendGridMail.send(forgetpassword_email(req.body.email,url));
-        console.log('Test email sent successfully');
+       
+       console.log('Test email sent successfully');
         res.send({url:url,message:'Email Send Successfully'});
       } catch (error) {
         res.status(500).send({
@@ -118,54 +132,49 @@ exports.signin = (req,res) =>{
             error.message || "Some error occurred while generating reset password."
         });
         
-      }
-      
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || "Some error occurred while generating reset password."
-      });
-    });
+      }              
+        })
   } })
   .catch(err => {
     res.status(500).send({
-      message:
-        err.message || "Some error occurred while checking user profile."
+      message:err.message 
     });
   });
   } 
 
   exports.change_password = (req,res)=>{
     const password_reset_token = req.params.password_reset_token;
-    User.findOne({
-      where: {
-        password_reset_token: password_reset_token
-             }
-    }).then(function (user) {
+    User.findOne({password_reset_token: password_reset_token}).then(function (user) {
      if (!user) {
         res.json({error:'Token Expire or Incorrect'});
      } else { 
+      const hash = bcrypt.hashSync(req.body.password, 10);
       content =  { 
-        password: req.body.password,
+        password: hash,
         password_reset_token: ""
       }
       
-      User.update(
-        content,
-        { where: { password_reset_token: password_reset_token }
-       }
-      )
-      .then(data => {
-        
-        res.send({message:'Password Changed Successfully.'});
-      })
-      .catch(err => {
-        res.status(500).send({
-          message:
-            err.message || "Some error occurred while generating reset password."
-        });
-      });
+
+      User.findOneAndUpdate(
+        {email:req.body.email},
+        {$set : content},
+        {new: true},
+        (err,user) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+            if(user===null){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+    
+            res.send({message:'Password Changed Successfully.'});
+        }
+        )
 
 
      }
@@ -192,18 +201,24 @@ exports.signin = (req,res) =>{
   
 
 exports.logout = (req,res) =>{
-  const token =
-  req.body.token || req.query.token || req.headers["x-access-token"];
-  UserToken.destroy({
-    where: {
-       token: token
-    }
- }).then(function(rowDeleted){
-   if(rowDeleted === 1){
+  const token = req.headers["x-access-token"];
+  UserToken.deleteOne({token: token}).then(function(rowDeleted){
+   
+    if(rowDeleted.deletedCount==1){
       res.status(200).send({
         message:"Logout Successfully"
       });
     }
+    if(rowDeleted.deletedCount==0){
+      res.status(200).send({
+        message:"Not Found"
+      });
+    }
+    
+      res.status(401).send({
+        message:"Something Went Wrong"
+      });
+    
  }, function(err){
   res.status(500).send({
     message:
@@ -211,4 +226,3 @@ exports.logout = (req,res) =>{
   }); 
  });
 }
-

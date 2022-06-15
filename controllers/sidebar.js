@@ -2,8 +2,11 @@ const Sidebar = require("../models/sidebar");
 const {validationResult} = require("express-validator");
 
 exports.createSidebar = (req,res) =>{
-    
-    sidebar =new Sidebar(req.body);
+    data={
+        title : req.body.title,
+        user : req.user._id
+    }    
+    sidebar =new Sidebar(data);
     sidebar.save((err,order)=>{
         if(err){
             return res.status(400).json({
@@ -16,7 +19,7 @@ exports.createSidebar = (req,res) =>{
 
 exports.getSidebarData = (req,res)=>{
 
-    Sidebar.find().exec((err,order)=>{
+    Sidebar.find({user:req.user._id}).exec((err,order)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
@@ -37,8 +40,8 @@ exports.updateSidebar = (req,res) =>{
   data = {
     title : req.body.title
   }
-  Sidebar.findByIdAndUpdate(
-    {_id : id},
+  Sidebar.findOneAndUpdate(
+    {_id : id,user:req.user._id},
     {$set : data},
     {new: true},
     (err,sidebar) => {
@@ -49,6 +52,12 @@ exports.updateSidebar = (req,res) =>{
         
         }
 
+        if(calender===null){
+            return res.status(404).json({
+                message : "No Data Found"
+            })
+        }
+
         return res.json(sidebar);
     }
     )   
@@ -57,7 +66,7 @@ exports.updateSidebar = (req,res) =>{
 exports.deleteSidebar = (req,res) =>{
     let id = req.params.id;
     Sidebar.deleteOne(
-        {_id : id},
+        {_id : id,user:req.user._id},
         (err,calender) => {
             if(err){
                 return res.status(404).json({
@@ -65,8 +74,19 @@ exports.deleteSidebar = (req,res) =>{
                 })
             
             }
+            if(calender.deletedCount==1){
+                return res.json({id : id});
+            }
+            if(calender.deletedCount==0){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+            return res.status(404).json({
+                message : "Something Went Wrong"
+            })
     
-            return res.json({id : id});
+            
         }
         )
   }

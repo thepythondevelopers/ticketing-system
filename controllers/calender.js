@@ -8,7 +8,15 @@ exports.createCalender = (req,res) =>{
           error : errors.array()
       })
   }
-    calender =new Calender(req.body);
+  data = {
+        startDate : req.body.startDate,
+        endDate : req.body.endDate,
+        title : req.body.title,
+        notes : req.body.notes,
+        user : req.user._id
+    }
+  
+    calender =new Calender(data);
     calender.save((err,calender)=>{
         if(err){
             return res.status(400).json({
@@ -20,13 +28,13 @@ exports.createCalender = (req,res) =>{
 }
 
 exports.getCalenderData = (req,res)=>{
-    Calender.find().exec((err,order)=>{
+    Calender.find({user:req.user._id}).exec((err,calender)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
             })
         }
-        return res.json(order);
+        return res.json(calender);
     })    
 }
 
@@ -44,8 +52,8 @@ exports.updateCalender = (req,res) =>{
     title : req.body.title,
     notes : req.body.notes
   }
-  Calender.findByIdAndUpdate(
-    {_id : id},
+  Calender.findOneAndUpdate(
+    {_id : id,user:req.user._id},
     {$set : data},
     {new: true},
     (err,calender) => {
@@ -54,6 +62,11 @@ exports.updateCalender = (req,res) =>{
                 error : err
             })
         
+        }
+        if(calender===null){
+            return res.status(404).json({
+                message : "No Data Found"
+            })
         }
 
         return res.json(calender);
@@ -64,7 +77,7 @@ exports.updateCalender = (req,res) =>{
 exports.deleteCalender = (req,res) =>{
     let id = req.params.id;
     Calender.deleteOne(
-        {_id : id},
+        {_id : id,user:req.user._id},
         (err,calender) => {
             if(err){
                 return res.status(404).json({
@@ -72,8 +85,18 @@ exports.deleteCalender = (req,res) =>{
                 })
             
             }
-    
-            return res.json({id : id});
+            
+            if(calender.deletedCount==1){
+                return res.json({id : id});
+            }
+            if(calender.deletedCount==0){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+            return res.status(404).json({
+                message : "Something Went Wrong"
+            })
         }
         )
   }
