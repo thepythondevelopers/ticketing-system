@@ -120,7 +120,7 @@ exports.signin = (req,res) =>{
                 })
             }
           //url = process.env.BASE_URL+'api/confirm-password/'
-      url = 'http://localhost:800/reset-password/'+token
+      url = 'http://localhost:8000/reset-password/'+token
       try {
         await sendGridMail.send(forgetpassword_email(req.body.email,url));
        
@@ -189,13 +189,271 @@ exports.signin = (req,res) =>{
 
 
   function forgetpassword_email(email,url) {
-    const body = `<p>Hello, Please click on the <a href="${url}">Link</a> to change the password</p>`;
+    
+    const body = `<!DOCTYPE html>
+    <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="x-apple-disable-message-reformatting">
+        <title></title> 
+    
+        <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,500,600,700" rel="stylesheet">
+    
+        <style>
+    
+            html,
+    body {
+        margin: 0 auto !important;
+        padding: 0 !important;
+        height: 100% !important;
+        width: 100% !important;
+        background: #f1f1f1;
+    }
+    
+    
+    * {
+        -ms-text-size-adjust: 100%;
+        -webkit-text-size-adjust: 100%;
+    }
+    
+    
+    div[style*="margin: 16px 0"] {
+        margin: 0 !important;
+    }
+    
+    
+    table,
+    td {
+        mso-table-lspace: 0pt !important;
+        mso-table-rspace: 0pt !important;
+    }
+    
+    
+    table {
+        border-spacing: 0 !important;
+        border-collapse: collapse !important;
+        table-layout: fixed !important;
+        margin: 0 auto !important;
+    }
+    
+    
+    img {
+        -ms-interpolation-mode:bicubic;
+    }
+    
+    
+    a {
+        text-decoration: none;
+    }
+    
+    
+    *[x-apple-data-detectors],  /* iOS */
+    .unstyle-auto-detected-links *,
+    .aBn {
+        border-bottom: 0 !important;
+        cursor: default !important;
+        color: inherit !important;
+        text-decoration: none !important;
+        font-size: inherit !important;
+        font-family: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+    }
+    
+    
+    .a6S {
+        display: none !important;
+        opacity: 0.01 !important;
+    }
+    
+    /* What it does: Prevents Gmail from changing the text color in conversation threads. */
+    .im {
+        color: inherit !important;
+    }
+    
+    /* If the above doesn't work, add a .g-img class to any image in question. */
+    img.g-img + div {
+        display: none !important;
+    }
+    
+    
+    @media only screen and (min-device-width: 320px) and (max-device-width: 374px) {
+        u ~ div .email-container {
+            min-width: 320px !important;
+        }
+    }
+    
+    @media only screen and (min-device-width: 375px) and (max-device-width: 413px) {
+        u ~ div .email-container {
+            min-width: 375px !important;
+        }
+    }
+    
+    @media only screen and (min-device-width: 414px) {
+        u ~ div .email-container {
+            min-width: 414px !important;
+        }
+    }
+    
+    
+        </style>
+    
+        <style>
+    
+          .primary{
+      background: #17bebb;
+    }
+    .bg_white{
+      background: #ffffff;
+    }
+    .bg_light{
+      background: #f7fafa;
+    }
+    .bg_black{
+      background: #000000;
+    }
+    .bg_dark{
+      background: rgba(0,0,0,.8);
+    }
+    .email-section{
+      padding:2.5em;
+    }
+    
+    /*BUTTON*/
+    .btn {
+      padding: 10px 65px;
+      display: inline-block;
+    }
+    .btn.btn-primary {
+      border-radius: 0;
+      background: #EC1C24;
+      color: #ffffff;
+    }
+    
+    h1,h2,h3,h4,h5,h6{
+      font-family: 'Poppins', sans-serif;
+      color: #000000;
+      margin-top: 0;
+      font-weight: 600;
+    }
+    
+    body{
+      font-family: 'Poppins', sans-serif;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 1.8;
+      color:#555555;
+    }
+    a {
+        color: #2C70F5;
+        word-break: break-all;
+    }
+    
+    table{
+    }
+    
+    .hero{
+      position: relative;
+      z-index: 0;
+    }
+    
+    .hero .text{
+      color: rgba(0,0,0,.3);
+    }
+    .hero .text h2{
+      color: #000;
+      font-size: 34px;
+      margin-bottom: 0;
+      font-weight: 200;
+      line-height: 1.4;
+    }
+    
+    .text-inner {
+      bordeR: 1px solid rgba(0,0,0,.05);
+      max-width: 80%;
+      margin: 0 auto;
+      padding: 2em;
+      background: #fff;
+    }
+    
+    
+    .social {
+      margin: 0 5px;
+    }
+    .footer p{
+    font-size:12px;
+    }
+    
+    @media screen and (max-width: 500px) {
+    
+    
+    }
+    
+    
+        </style>
+    
+    
+    </head>
+    
+    <body width="100%" style="margin: 0; padding: 0 !important; mso-line-height-rule: exactly; background-color: #f1f1f1;">
+      <center style="width: 100%; background-color: #f1f1f1;">
+        <div style="max-width: 768px; margin: 0 auto; background: #F7F9FD;" class="email-container">
+    
+          <table align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+            <tr>
+              <td valign="top" style="padding: 1em 2.5em 0 2.5em;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td class="logo" style="text-align: center;">
+                      <a href="#"><img src="${process.env.BASE_URL}/uploads/logo.png" alt="" title="" /></a>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <tr>
+              <td valign="middle" class="hero" style="padding: 2em 0 2em 0;">
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td style="text-align: left;">
+                      <div class="text-inner">				          	
+                        <h2>Reset Your Password</h2>
+                        <span class="name">Hi,</span>
+    <p>To set up a new password to your Enmeldung account, click "Reset Your Password" below, or use this link:</p>				           	
+                         <p><a href="${url}">"${url}"</a></p>
+                  <p><i><span style="color:red;">*</span>If nothing happens 
+    after clicking, copy, and paste the link in your 
+    browser. </i></p>	
+                  <p style="text-align: center;"><a href="${url}" class="btn btn-primary">Reset Password</a></p>
+                  <p>If you didn’t request this, you can ignore this email or let us know. Your password won’t change untill you create a new password</p>
+                       </div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </table>
+          <table class="footer" align="center" role="presentation" cellspacing="0" cellpadding="0" border="0" width="100%" style="margin: auto;">
+        <tr>
+              <td class="" style="text-align: center; padding: 0 7%;">
+                
+    <p>© Copyright Enemeldung. All Rights Reserved. 2022</p>
+              </td>
+            </tr>
+          </table>
+    
+        </div>
+      </center>
+    </body>
+    </html>`;
     return {
       to: email,
       from: process.env.SENDGRID_FROM_ADDRESS,
       subject: 'Password Reset',
       text: body,
-      html: `<strong>${body}</strong>`,
+      html: `${body}`,
     };
   }
   

@@ -24,6 +24,9 @@ mongoose.connect(process.env.DATABASE,{
     console.log(err);
 })
 
+app.use(express.static('uploads')); 
+app.use('/uploads', express.static('uploads'));
+
 const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
