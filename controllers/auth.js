@@ -421,11 +421,9 @@ exports.signin = (req,res) =>{
                       <div class="text-inner">				          	
                         <h2>Reset Your Password</h2>
                         <span class="name">Hi,</span>
-    <p>To set up a new password to your Enmeldung account, click "Reset Your Password" below, or use this link:</p>				           	
-                         <p><a href="${url}">"${url}"</a></p>
-                  <p><i><span style="color:red;">*</span>If nothing happens 
-    after clicking, copy, and paste the link in your 
-    browser. </i></p>	
+    <p>To set up a new password to your Enmeldung account, click "Reset Your Password" below:</p>				           	
+                         
+                  
                   <p style="text-align: center;"><a href="${url}" class="btn btn-primary">Reset Password</a></p>
                   <p>If you didn’t request this, you can ignore this email or let us know. Your password won’t change untill you create a new password</p>
                        </div>
