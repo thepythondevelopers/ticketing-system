@@ -2,7 +2,7 @@ var express = require('express')
 var router = express.Router()
 const { check} = require("express-validator");
 const User = require("../models/user");
-const {signup,signin,forget_password,logout} = require("../controllers/auth");
+const {signup,signin,forget_password,change_password,logout} = require("../controllers/auth");
 const {verifyToken} = require("../middleware/auth");
 
 router.post("/sign-up",[
@@ -33,10 +33,10 @@ router.post("/sign-in",[
      check("email").isLength({max : 255}).isEmail().notEmpty()
    ],forget_password);
   
-  // router.post("/change-password/:password_reset_token",[
-  //   check("token").notEmpty(),
-  //   check("password").isLength({max : 255}).notEmpty(),
-  // ],change_password);
+  router.post("/change-password/:password_reset_token",[
+    check("token").notEmpty(),
+    check("password").isLength({max : 255}).notEmpty(),
+  ],change_password);
   
   
   
