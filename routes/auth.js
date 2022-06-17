@@ -20,6 +20,12 @@ router.post("/sign-up",[
         });
       }).notEmpty(),
     check("password").isLength({max : 20}).notEmpty(),
+    check("first_name").notEmpty(),
+    check("last_name").notEmpty(),
+    check("company_name").notEmpty(),
+    check("phone_number").notEmpty(),
+    check("street").notEmpty(),
+    check("house_number").notEmpty(),
 ],signup);
 
 router.post("/sign-in",[

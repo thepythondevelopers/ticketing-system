@@ -21,7 +21,13 @@ exports.signup =  (req,res)=>{
   const hash = bcrypt.hashSync(req.body.password, 10);
   user_data = {
     password : hash,
-    email: req.body.email
+    email: req.body.email,
+    first_name :req.body.first_name,
+    last_name :req.body.last_name,
+    company_name:req.body.company_name,
+    phone_number:req.body.phone_number,
+    street:req.body.street,
+    house_number:req.body.house_number
   }
 
   
