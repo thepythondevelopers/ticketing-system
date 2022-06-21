@@ -1,41 +1,42 @@
-const Sidebar = require("../models/sidebar");
+const Drag = require("../models/drag");
 const {validationResult} = require("express-validator");
 
-exports.createSidebar = (req,res) =>{
+exports.createDrag = (req,res) =>{
     const errors = validationResult(req);
   if(!errors.isEmpty()){
       return res.status(400).json({
           error : errors.array()
       })
   }
+
     data={
-        title : req.body.title,
+        data_content : req.body.data,
         user : req.user._id
     }    
-    sidebar =new Sidebar(data);
-    sidebar.save((err,order)=>{
+    drag =new Drag(data);
+    drag.save((err,order)=>{
         if(err){
             return res.status(400).json({
-                message : "Unable to sabe in db"
+                message : err
             })
         }
-        return res.json(sidebar);
+        return res.json(drag);
     })
 }
 
-exports.getSidebarData = (req,res)=>{
+exports.getDragData = (req,res)=>{
 
-    Sidebar.find({user:req.user._id}).exec((err,order)=>{
+    Drag.find({user:req.user._id}).exec((err,drag)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
             })
         }
-        return res.json(order);
+        return res.json(drag);
     })    
 }
 
-exports.updateSidebar = (req,res) =>{
+exports.updateDrag = (req,res) =>{
     id = req.params.id;
     const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -44,46 +45,46 @@ exports.updateSidebar = (req,res) =>{
       })
   }
   data = {
-    title : req.body.title
+    data : req.body.data
   }
-  Sidebar.findOneAndUpdate(
+  Drag.findOneAndUpdate(
     {_id : id,user:req.user._id},
     {$set : data},
     {new: true},
-    (err,sidebar) => {
+    (err,drag) => {
         if(err){
             return res.status(404).json({
                 error : err
             })
         
         }
-
-        if(calender===null){
+        if(drag===null){
             return res.status(404).json({
                 message : "No Data Found"
             })
         }
 
-        return res.json(sidebar);
+        return res.json(drag);
     }
     )   
 }
 
-exports.deleteSidebar = (req,res) =>{
+exports.deleteDrag = (req,res) =>{
     let id = req.params.id;
-    Sidebar.deleteOne(
+    Drag.deleteOne(
         {_id : id,user:req.user._id},
-        (err,calender) => {
+        (err,drag) => {
             if(err){
                 return res.status(404).json({
                     error : err
                 })
             
             }
-            if(calender.deletedCount==1){
+            
+            if(drag.deletedCount==1){
                 return res.json({id : id});
             }
-            if(calender.deletedCount==0){
+            if(drag.deletedCount==0){
                 return res.status(404).json({
                     message : "No Data Found"
                 })
@@ -91,8 +92,6 @@ exports.deleteSidebar = (req,res) =>{
             return res.status(404).json({
                 message : "Something Went Wrong"
             })
-    
-            
         }
         )
   }

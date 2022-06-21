@@ -12,7 +12,7 @@ const calenderRoutes = require("./routes/calender");
 const sidebarRoutes = require("./routes/sidebar");
 const authRoutes = require("./routes/auth");
 const stripeRoutes = require("./routes/stripe");
-
+const dragRoutes = require("./routes/drag");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -38,6 +38,7 @@ app.use('/api',calenderRoutes);
 app.use('/api',sidebarRoutes);
 app.use('/api',authRoutes);
 app.use('/api',stripeRoutes);
+app.use('/api',dragRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)

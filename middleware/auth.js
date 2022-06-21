@@ -1,4 +1,5 @@
 const UserToken = require("../models/userToken");
+const Drag = require("../models/drag");
 var jwt = require('jsonwebtoken');
 exports.verifyToken = async (req, res, next) => {
   const token = req.headers["x-access-token"];
@@ -25,3 +26,14 @@ exports.verifyToken = async (req, res, next) => {
   }
   return next();
 };
+
+exports.checkDragExist = async (req, res, next) => {
+  
+drag = await Drag.findOne({user:req.user._id});
+if(drag!=null){
+  return res.status(401).json({
+    message : "Already Exist"
+    })
+  }
+return next();  
+}
