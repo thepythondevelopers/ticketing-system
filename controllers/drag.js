@@ -95,3 +95,16 @@ exports.deleteDrag = (req,res) =>{
         }
         )
   }
+
+  exports.deleteAllDrag = (req,res) =>{
+    
+    Drag.remove({}, function(err, result) {
+        if (err) {
+            console.log(err);
+        }
+        console.log(result);
+        
+    });
+   
+    return res.json({message:"Delete All Drag Records Succcessfully."})
+  }  

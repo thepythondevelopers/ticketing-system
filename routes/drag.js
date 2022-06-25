@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check} = require("express-validator");
-const {createDrag,getDragData,updateDrag,deleteDrag} = require("../controllers/drag");
+const {createDrag,getDragData,updateDrag,deleteDrag,deleteAllDrag} = require("../controllers/drag");
 const {verifyToken,checkDragExist} = require("../middleware/auth");
 
 
@@ -14,5 +14,5 @@ router.put("/update-drag/:id",[
     check("data").not().isEmpty().withMessage('Must Have value'),
 ],verifyToken,updateDrag);
 //router.delete("/delete-drag/:id",verifyToken,deleteDrag);
-
+router.post("/delete-all-drag",verifyToken,deleteAllDrag);
 module.exports = router;
