@@ -15,11 +15,11 @@ const dragSchema = new Schema({
     }
     
 },{timstamps: true});
-dragSchema.set('toJSON', { virtuals: true })
-dragSchema.virtual('data_content').
-  get(function() { return JSON.parse(this.data); }).
-  set(function(v) {
-    const data = JSON.stringify(v);
-    this.set({ data });
-  });
+// dragSchema.set('toJSON', { virtuals: true })
+// dragSchema.virtual('data_content').
+//   get(function() { return JSON.parse(this.data); }).
+//   set(function(v) {
+//     const data = JSON.stringify(v);
+//     this.set({ data });
+//   });
 module.exports = mongoose.model("Drag",dragSchema);

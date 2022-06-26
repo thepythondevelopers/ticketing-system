@@ -10,7 +10,7 @@ exports.createDrag = (req,res) =>{
   }
 
     data={
-        data_content : req.body.data,
+        data : JSON.stringify(req.body.data),
         user : req.user._id
     }    
     drag =new Drag(data);
@@ -45,7 +45,7 @@ exports.updateDrag = (req,res) =>{
       })
   }
   data = {
-    data : req.body.data
+    data : JSON.stringify(req.body.data)
   }
   Drag.findOneAndUpdate(
     {_id : id,user:req.user._id},
