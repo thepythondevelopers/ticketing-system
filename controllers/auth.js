@@ -52,8 +52,11 @@ exports.signin = (req,res) =>{
           error : errors.array()
       })
   }
+  if(req.body.role!='admin'){
   const {email} = req.body;
-  User.findOne({email}, function(err, user) {
+  role ='user';
+  const status =1;
+  User.findOne({email,role,status}, function(err, user) {
     
    if (!user) {
       res.json({error:'User Not Found'});
@@ -61,7 +64,8 @@ exports.signin = (req,res) =>{
     bcrypt.compare(req.body.password, user.password, async function (err, result) {
       if (result == true) {
           //create token          
-        var token = jwt.sign({ _id: user._id,email:user.email }, process.env.SECRET,{ expiresIn: '1d'  });
+          
+        var token = jwt.sign({ _id: user._id,email:user.email,role:user.role }, process.env.SECRET,{ expiresIn: '1d'  });
         user_email = user.email;
 
         
@@ -73,7 +77,7 @@ exports.signin = (req,res) =>{
             err.message || "Some error occurred."
         });
       });
-      await UserToken.deleteOne({ created_at:{$lte:moment().subtract(2, 'days').toDate()} });
+      await UserToken.deleteOne({ createdAt:{$lte:moment().subtract(2, 'days').toDate()} });
 
         res.json({token,user:{user_email}});
       } else {
@@ -87,6 +91,47 @@ exports.signin = (req,res) =>{
       err.message || "Some error occurred."
   });
 });
+
+  }else{
+    const {email,role} = req.body;
+    const status =1;
+    User.findOne({email,role,status}, function(err, user) {
+      
+     if (!user) {
+        res.json({error:'User Not Found'});
+     } else {
+      bcrypt.compare(req.body.password, user.password, async function (err, result) {
+        if (result == true) {
+            //create token          
+          var token = jwt.sign({ _id: user._id,email:user.email,role:user.role }, process.env.SECRET,{ expiresIn: '1d'  });
+          user_email = user.email;
+  
+          
+  
+        await UserToken.create({token:token}).then( usertoken => {
+        }).catch(err => {
+          res.status(500).send({
+            message:
+              err.message || "Some error occurred."
+          });
+        });
+        await UserToken.deleteOne({ created_at:{$lte:moment().subtract(2, 'days').toDate()} });
+  
+          res.json({token,user:{user_email}});
+        } else {
+          res.json({error:"Incorrect Password"});
+        }
+      });
+    }
+  }).catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred."
+    });
+  }); 
+  }
+
+
 }
 
 

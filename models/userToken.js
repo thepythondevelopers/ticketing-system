@@ -7,6 +7,6 @@ const userTokenSchema = new Schema({
         required : true,
       },
     
-},{timstamps: true});
+},{timestamps: true});
 
 module.exports = mongoose.model("UserToken",userTokenSchema);

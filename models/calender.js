@@ -27,6 +27,6 @@ const calenderSchema = new Schema({
         ref: "User",
         required : true
     }
-},{timstamps: true});
+},{timestamps: true});
 
 module.exports = mongoose.model("Calender",calenderSchema);

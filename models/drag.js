@@ -14,7 +14,7 @@ const dragSchema = new Schema({
         required : true
     }
     
-},{timstamps: true});
+},{timestamps: true});
 // dragSchema.set('toJSON', { virtuals: true })
 // dragSchema.virtual('data_content').
 //   get(function() { return JSON.parse(this.data); }).

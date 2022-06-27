@@ -11,7 +11,14 @@ const sidebarSchema = new Schema({
         type : ObjectId,
         ref: "User",
         required : true
-    }
-},{timstamps: true});
+    },
+    checked:{
+        type:Boolean,
+        default:0 //0=>False 1=>True
+    },
+    completedate:{
+        type:Date
+    },
+},{timestamps: true});
 
 module.exports = mongoose.model("Sidebar",sidebarSchema);

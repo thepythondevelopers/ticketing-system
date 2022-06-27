@@ -23,6 +23,11 @@ const userSchema = new Schema({
         required : true,
         trim : true
     },
+    role:{
+        type:String,
+        required : true,
+        default : 'user'
+    },
     company_name:{
         type:String,
         required : true,
@@ -46,7 +51,14 @@ const userSchema = new Schema({
     password_reset_token:{
         type:String,
         trim : true
-    }
-},{timstamps: true});
+    },
+    about:{
+        type:String
+    },
+    status:{
+        type:Boolean,
+        default:1 //0=>False 1=>True/Active
+    },
+},{timestamps: true});
 
 module.exports = mongoose.model("User",userSchema);
