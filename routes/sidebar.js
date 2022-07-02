@@ -12,7 +12,8 @@ router.post("/get-sidebar",verifyToken,getSidebarData);
 router.post("/get-checked-sidebar",verifyToken,getCheckedSidebarData);
 
 router.put("/update-sidebar/:id",verifyToken,[
-    check("title").not().isEmpty().withMessage('Must Have value')
+    check("title").not().isEmpty().withMessage('Must Have value'),
+    check("checked").not().isEmpty().withMessage('Must Have value')
 ],updateSidebar);
 router.delete("/delete-sidebar/:id",verifyToken,deleteSidebar);
 

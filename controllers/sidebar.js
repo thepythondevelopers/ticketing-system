@@ -56,7 +56,8 @@ exports.updateSidebar = (req,res) =>{
       })
   }
   data = {
-    title : req.body.title
+    title : req.body.title,
+    checked : req.body.checked
   }
   Sidebar.findOneAndUpdate(
     {_id : id,user:req.user._id},
