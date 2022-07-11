@@ -67,6 +67,8 @@ exports.signin = (req,res) =>{
           
         var token = jwt.sign({ _id: user._id,email:user.email,role:user.role }, process.env.SECRET,{ expiresIn: '1d'  });
         user_email = user.email;
+        user_role = user.role;
+        user_name = user.first_name +' '+ user.last_name; 
 
         
 
@@ -79,7 +81,7 @@ exports.signin = (req,res) =>{
       });
       await UserToken.deleteOne({ createdAt:{$lte:moment().subtract(2, 'days').toDate()} });
 
-        res.json({token,user:{user_email}});
+        res.json({token,user:{user_name,user_email,user_role}});
       } else {
         res.json({error:"Incorrect Password"});
       }
