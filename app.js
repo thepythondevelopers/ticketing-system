@@ -14,6 +14,7 @@ const authRoutes = require("./routes/auth");
 const stripeRoutes = require("./routes/stripe");
 const dragRoutes = require("./routes/drag");
 const userRoutes = require("./routes/user");
+const packageRoutes = require("./routes/package");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -41,6 +42,8 @@ app.use('/api',authRoutes);
 app.use('/api',stripeRoutes);
 app.use('/api',dragRoutes);
 app.use('/api',userRoutes);
+app.use('/api',packageRoutes);
+
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)

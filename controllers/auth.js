@@ -27,7 +27,11 @@ exports.signup =  (req,res)=>{
     company_name:req.body.company_name,
     phone_number:req.body.phone_number,
     street:req.body.street,
-    house_number:req.body.house_number
+    house_number:req.body.house_number,
+    postal_code:req.body.postal_code,
+    city:req.body.city,
+    land:req.body.land,
+    sales_tax_id:req.body.sales_tax_id
   }
 
   

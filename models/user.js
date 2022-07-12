@@ -52,6 +52,26 @@ const userSchema = new Schema({
         type:String,
         trim : true
     },
+    postal_code:{
+        type:String,
+        trim : true,
+        required : true
+    },
+    city:{
+        type:String,
+        trim : true,
+        required : true
+    },
+    land:{
+        type:String,
+        trim : true,
+        required : true
+    },
+    sales_tax_id:{
+        type:String,
+        trim : true,
+        required : true
+    },
     about:{
         type:String
     },

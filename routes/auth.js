@@ -26,6 +26,10 @@ router.post("/sign-up",[
     check("phone_number").notEmpty(),
     check("street").notEmpty(),
     check("house_number").notEmpty(),
+    check("postal_code").notEmpty(),
+    check("city").notEmpty(),
+    check("land").notEmpty(),
+    check("sales_tax_id").notEmpty()
 ],signup);
 
 router.post("/sign-in",[
