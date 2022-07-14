@@ -9,7 +9,7 @@ exports.getUser =  (req,res)=>{
     User.findOne({_id:req.user._id}).select('-password').exec((err,user)=>{
         if(err){
             return res.status(400).json({
-                message : "No Data Found"
+                message : "Something Went Wrong"
             })
         }
         return res.json(user);
@@ -32,7 +32,11 @@ exports.updateUser =  (req,res)=>{
     phone_number : req.body.phone_number,
     street : req.body.street,
     house_number : req.body.house_number,
-    about : req.body.about
+    about : req.body.about,
+    postal_code : req.body.postal_code,
+    city : req.body.city,
+    land : req.body.land,
+    sales_tax_id : req.body.sales_tax_id
   }
   User.findOneAndUpdate(
     {_id:req.user._id},
@@ -122,6 +126,71 @@ exports.userActive =  (req,res)=>{
         }
 
         return res.json({message:"User Activate Successfully."});
+    }
+    )   
+}
+
+exports.getUserListing =  (req,res)=>{
+    User.find({role:'user'}).select('-password').exec((err,user)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Something Went Wrong"
+            })
+        }
+        return res.json(user);
+    })    
+}
+exports.getUserAdmin =  (req,res)=>{
+    User.findOne({_id:req.params.id}).select('-password').exec((err,user)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Something Went Wrong"
+            })
+        }
+        return res.json(user);
+    })    
+}
+
+exports.updateUserAdmin =  (req,res)=>{
+    id = req.params.id;
+    const errors = validationResult(req);
+  if(!errors.isEmpty()){
+      return res.status(400).json({
+          error : errors.array()
+      })
+  }
+  data = {
+    first_name : req.body.first_name,
+    last_name : req.body.last_name,
+    company_name : req.body.company_name,
+    phone_number : req.body.phone_number,
+    street : req.body.street,
+    house_number : req.body.house_number,
+    about : req.body.about,
+    postal_code : req.body.postal_code,
+    city : req.body.city,
+    land : req.body.land,
+    sales_tax_id : req.body.sales_tax_id
+  }
+  User.findOneAndUpdate(
+    {_id:id},
+    {$set : data},
+    {new: true, select: "-password"},
+    (err,user) => {
+        if(err){
+            return res.status(404).json({
+                error : err
+            })
+        
+        }
+
+        if(user===null){
+            return res.status(404).json({
+                message : "No Data Found"
+            })
+        }
+
+        return res.json(user);
     }
     )   
 }
