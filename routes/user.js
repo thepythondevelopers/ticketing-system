@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check} = require("express-validator");
-const {getUser,updateUser,getUserListing,getUserAdmin,updateUserAdmin,userActive,userDeactivate} = require("../controllers/user");
+const {getUser,updateUser,getUserListing,getUserAdmin,updateUserAdmin,userActive,userDeactivate,deleteUser} = require("../controllers/user");
 const {verifyToken,adminroleCheck} = require("../middleware/auth");
 
 //actual routes
@@ -23,7 +23,7 @@ router.put("/update-profile",verifyToken,[
 
 router.post("/get-user-listing",verifyToken,adminroleCheck,getUserListing);
 router.post("/get-user-detail/:id",verifyToken,adminroleCheck,getUserAdmin);
-router.put("/update-user-admin",verifyToken,[
+router.put("/update-user-admin/:id",verifyToken,[
     check("first_name").not().isEmpty().withMessage('Must Have value'),
     check("last_name").not().isEmpty().withMessage('Must Have value'),
     check("company_name").not().isEmpty().withMessage('Must Have value'),
@@ -41,6 +41,6 @@ router.put("/update-user-admin",verifyToken,[
 router.post("/user-active/:id",verifyToken,adminroleCheck,userActive);
 router.post("/user-deactive/:id",verifyToken,adminroleCheck,userDeactivate);
 
-
+router.post("/user-delete/:id",verifyToken,adminroleCheck,deleteUser);
 module.exports = router;
 

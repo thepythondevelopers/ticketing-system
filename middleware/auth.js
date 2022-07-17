@@ -21,11 +21,11 @@ exports.verifyToken = async (req, res, next) => {
   
   req.user = decoded;
   
-  user = await User.findOne({_id: req.user._id});
+  user = await User.findOne({_id: req.user._id,status:1});
   
   if (user === null) {
     return res.status(401).send({
-      error : "User Account Deactive"
+      error : "User Account Deactive/Not Found"
     });
   }
   } catch (err_m) {

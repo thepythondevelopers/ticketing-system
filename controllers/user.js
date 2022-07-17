@@ -194,3 +194,30 @@ exports.updateUserAdmin =  (req,res)=>{
     }
     )   
 }
+
+exports.deleteUser = (req,res) =>{
+    let id = req.params.id;
+    User.deleteOne(
+        {_id : id,role:'user'},
+        (err,user) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+            
+            if(user.deletedCount==1){
+                return res.json({id : id});
+            }
+            if(user.deletedCount==0){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+            return res.status(404).json({
+                message : "Something Went Wrong"
+            })
+        }
+        )
+  }
