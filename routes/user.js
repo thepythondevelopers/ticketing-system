@@ -41,6 +41,6 @@ router.put("/update-user-admin/:id",verifyToken,[
 router.post("/user-active/:id",verifyToken,adminroleCheck,userActive);
 router.post("/user-deactive/:id",verifyToken,adminroleCheck,userDeactivate);
 
-router.post("/user-delete/:id",verifyToken,adminroleCheck,deleteUser);
+router.delete("/user-delete/:id",verifyToken,adminroleCheck,deleteUser);
 module.exports = router;
 
