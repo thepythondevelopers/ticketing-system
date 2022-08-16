@@ -7,6 +7,11 @@ const sidebarSchema = new Schema({
         required : true,
         trim : true
     },
+    location :{
+        type : ObjectId,
+        ref: "Location",
+        required : true
+    },
     user :{
         type : ObjectId,
         ref: "User",

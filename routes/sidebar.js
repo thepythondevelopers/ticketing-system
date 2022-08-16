@@ -6,10 +6,11 @@ const {verifyToken} = require("../middleware/auth");
 
 //actual routes
 router.post("/create-sidebar",verifyToken,[
-    check("title").not().isEmpty().withMessage('Must Have value')
+    check("title").not().isEmpty().withMessage('Must Have value'),
+    check("location").not().isEmpty().withMessage('Must Have value')
 ],createSidebar);
-router.post("/get-sidebar",verifyToken,getSidebarData);
-router.post("/get-checked-sidebar",verifyToken,getCheckedSidebarData);
+router.post("/get-sidebar/:location_id",verifyToken,getSidebarData);
+router.post("/get-checked-sidebar/:location_id",verifyToken,getCheckedSidebarData);
 
 router.put("/update-sidebar/:id",verifyToken,[
     check("title").not().isEmpty().withMessage('Must Have value'),

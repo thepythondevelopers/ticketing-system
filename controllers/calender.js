@@ -13,7 +13,8 @@ exports.createCalender = (req,res) =>{
         endDate : req.body.endDate,
         title : req.body.title,
         notes : req.body.notes,
-        user : req.user._id
+        user : req.user._id,
+        location : req.body.location
     }
   
     calender =new Calender(data);
@@ -28,7 +29,7 @@ exports.createCalender = (req,res) =>{
 }
 
 exports.getCalenderData = (req,res)=>{
-    Calender.find({user:req.user._id}).exec((err,calender)=>{
+    Calender.find({user:req.user._id,location:req.params.location_id}).exec((err,calender)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"

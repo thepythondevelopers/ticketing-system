@@ -10,7 +10,8 @@ exports.createSidebar = (req,res) =>{
   }
     data={
         title : req.body.title,
-        user : req.user._id
+        user : req.user._id,
+        location : req.body.location
     }    
     sidebar =new Sidebar(data);
     sidebar.save((err,sidebar)=>{
@@ -25,7 +26,7 @@ exports.createSidebar = (req,res) =>{
 
 exports.getSidebarData = (req,res)=>{
 
-    Sidebar.find({user:req.user._id,checked:0}).exec((err,order)=>{
+    Sidebar.find({user:req.user._id,checked:0,location:req.params.location_id}).exec((err,order)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
@@ -37,7 +38,7 @@ exports.getSidebarData = (req,res)=>{
 
 exports.getCheckedSidebarData = (req,res)=>{
 
-    Sidebar.find({user:req.user._id,checked:1}).exec((err,order)=>{
+    Sidebar.find({user:req.user._id,checked:1,location:req.params.location_id}).exec((err,order)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
