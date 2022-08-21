@@ -11,7 +11,8 @@ exports.createDrag = (req,res) =>{
 
     data={
         data : JSON.stringify(req.body.data),
-        user : req.user._id
+        user : req.user._id,
+        location : req.body.location
     }    
     drag =new Drag(data);
     drag.save((err,order)=>{
@@ -26,7 +27,7 @@ exports.createDrag = (req,res) =>{
 
 exports.getDragData = (req,res)=>{
 
-    Drag.find({user:req.user._id}).exec((err,drag)=>{
+    Drag.find({user:req.user._id,location:req.params.location_id}).exec((err,drag)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"

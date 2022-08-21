@@ -16,7 +16,11 @@ const menuDropdownSchema = new Schema({
         type:Boolean,
         default:1, //0=>False 1=>True/Active
         required : true
-     
+    },
+    location :{
+        type : ObjectId,
+        ref: "Location",
+        required : true
     }
 },{timestamps: true});
 

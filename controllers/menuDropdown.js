@@ -11,7 +11,9 @@ exports.createdropDown = (req,res) =>{
   data = {
         event_calender : req.body.event_calender,
         note : req.body.note,
-        board_fixed : req.body.board_fixed
+        board_fixed : req.body.board_fixed,
+        user : req.user._id,
+        location : req.body.location
     }
   
     menuDropdown =new MenuDropdown(data);
@@ -26,7 +28,7 @@ exports.createdropDown = (req,res) =>{
 }
 
 exports.getMenuDropdownData = (req,res)=>{
-    MenuDropdown.find().exec((err,data)=>{
+    MenuDropdown.find({user:req.user._id,location:req.params.location_id}).exec((err,data)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
@@ -38,7 +40,7 @@ exports.getMenuDropdownData = (req,res)=>{
 
 exports.getMenuDropdownDataId =  (req,res)=>{
     id = req.params.id;
-    MenuDropdown.findOne({_id:id}).exec((err,data)=>{
+    MenuDropdown.findOne({_id:id,user:req.user._id}).exec((err,data)=>{
         if(err){
             return res.status(400).json({
                 message : "Something Went Wrong"
@@ -62,7 +64,7 @@ exports.updateMenuDropdown = (req,res) =>{
     board_fixed : req.body.board_fixed
   }
   MenuDropdown.findOneAndUpdate(
-    {_id : id},
+    {_id : id,user:req.user._id},
     {$set : data},
     {new: true},
     (err,data) => {
@@ -86,7 +88,7 @@ exports.updateMenuDropdown = (req,res) =>{
 exports.deleteMenuDropDown = (req,res) =>{
     let id = req.params.id;
     MenuDropdown.deleteOne(
-        {_id : id},
+        {_id : id,user:req.user._id},
         (err,data) => {
             if(err){
                 return res.status(404).json({

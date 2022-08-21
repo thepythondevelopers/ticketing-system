@@ -12,6 +12,11 @@ const dragSchema = new Schema({
         type : ObjectId,
         ref: "User",
         required : true
+    },
+    location :{
+        type : ObjectId,
+        ref: "Location",
+        required : true
     }
     
 },{timestamps: true});
