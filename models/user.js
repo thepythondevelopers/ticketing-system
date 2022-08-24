@@ -75,6 +75,16 @@ const userSchema = new Schema({
     about:{
         type:String
     },
+    avatar:{
+        type:String,
+        required : true,
+        trim : true
+    },
+    company_logo:{
+        type:String,
+        required : true,
+        trim : true
+    },
     status:{
         type:Boolean,
         default:1 //0=>False 1=>True/Active

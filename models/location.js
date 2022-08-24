@@ -29,12 +29,15 @@ const locationSchema = new Schema({
     },
     location_image:{
         type:String,
-        required : true,
         trim : true
     },
     location:{
         type:String,
         required : true,
+        trim : true
+    },
+    company_logo:{
+        type:String,
         trim : true
     },
     user :{

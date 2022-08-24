@@ -17,7 +17,7 @@ exports.getUser =  (req,res)=>{
 }
 
 
-exports.updateUser =  (req,res)=>{
+exports.updateUser =  async (req,res)=>{
     id = req.params.id;
     const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -38,6 +38,36 @@ exports.updateUser =  (req,res)=>{
     land : req.body.land,
     sales_tax_id : req.body.sales_tax_id
   }
+  if(req.files !== null && typeof(req.files) != "undefined"){    
+    if( typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+        data.company_logo = req.files.company_logo[0].filename;
+    }
+    if(typeof(req.files.avatar) != "undefined" && req.files.avatar !== null){
+        data.avatar = req.files.avatar[0].filename;
+    }
+}
+  
+
+
+  await User.findOne({_id:req.user._id}).exec((err,u)=>{
+    if(err){
+        return res.status(400).json({
+            message : "Something Went Wrong"
+        })
+    }
+    if(req.files !== null && typeof(req.files) != "undefined"){        
+        if(typeof(req.files.avatar) != "undefined" && req.files.avatar !== null){
+            fs.unlink('./uploads'+u.avatar, function (err) {
+                console.log('File deleted!');
+            });
+        }
+        if(typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+            fs.unlink('./uploads'+u.company_logo, function (err) {
+                console.log('File deleted!');
+            });
+        }
+    }
+})
   User.findOneAndUpdate(
     {_id:req.user._id},
     {$set : data},
@@ -46,8 +76,7 @@ exports.updateUser =  (req,res)=>{
         if(err){
             return res.status(404).json({
                 error : err
-            })
-        
+            })        
         }
 
         if(user===null){
@@ -151,7 +180,7 @@ exports.getUserAdmin =  (req,res)=>{
     })    
 }
 
-exports.updateUserAdmin =  (req,res)=>{
+exports.updateUserAdmin = async (req,res)=>{
     id = req.params.id;
     const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -172,6 +201,38 @@ exports.updateUserAdmin =  (req,res)=>{
     land : req.body.land,
     sales_tax_id : req.body.sales_tax_id
   }
+
+  if(req.files !== null && typeof(req.files) != "undefined"){    
+    if( typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+        data.company_logo = req.files.company_logo[0].filename;
+    }
+    if(typeof(req.files.avatar) != "undefined" && req.files.avatar !== null){
+        data.avatar = req.files.avatar[0].filename;
+    }
+}
+  
+
+
+  await User.findOne({_id:req.user._id}).exec((err,u)=>{
+    if(err){
+        return res.status(400).json({
+            message : "Something Went Wrong"
+        })
+    }
+    if(req.files !== null && typeof(req.files) != "undefined"){        
+        if(typeof(req.files.avatar) != "undefined" && req.files.avatar !== null){
+            fs.unlink('./uploads'+u.avatar, function (err) {
+                console.log('File deleted!');
+            });
+        }
+        if(typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+            fs.unlink('./uploads'+u.company_logo, function (err) {
+                console.log('File deleted!');
+            });
+        }
+    }
+})
+
   User.findOneAndUpdate(
     {_id:id},
     {$set : data},

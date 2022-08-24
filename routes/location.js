@@ -7,7 +7,7 @@ var multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function(req,file,cb){
-      cb(null,"./uploads")
+      cb(null,"./uploads/location")
     },
     filename : function(req,file,cb){
       cb(null,Date.now()+file.originalname)
@@ -26,8 +26,8 @@ const storage = multer.diskStorage({
     fileFilter:fileFilter
   })
 
-  router.post("/create-location",verifyToken,upload.single('location_image'),createLocation);
-  router.put("/update-location/:id",verifyToken,upload.single('location_image'),updateLocation);
+  router.post("/create-location",verifyToken,upload.fields([{name:'location_image',maxCount:1},{name:'company_logo',maxCount:1}]),createLocation);
+  router.put("/update-location/:id",verifyToken,upload.fields([{name:'location_image',maxCount:1},{name:'company_logo',maxCount:1}]),updateLocation);
   router.get("/get-location/:id",verifyToken,getSingleLocation);
   router.get("/get-location-data",verifyToken,getLocationData);
   router.delete("/delete-location/:id",verifyToken,deleteLocation);

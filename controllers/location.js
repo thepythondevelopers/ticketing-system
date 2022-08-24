@@ -9,16 +9,20 @@ exports.createLocation = (req,res) =>{
           error : errors.array()
       })
   }
+  location_image = (typeof(req.files.location_image) != "undefined" && req.files.location_image !== null) ? req.files.location_image[0].filename : null; 
+  company_logo = (typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null) ? req.files.company_logo[0].filename : null; 
     data={
         company_name : req.body.company_name,
         house_number : req.body.house_number,
         street : req.body.street,
         postal_code : req.body.postal_code,
         city : req.body.city,
-        location_image : req.file.filename,
+        location_image : location_image,
         location : req.body.location,
+        company_logo : company_logo,
         user : req.user._id
     }    
+    
     location =new Location(data);
     location.save((err,location)=>{
         if(err){
@@ -38,38 +42,43 @@ exports.updateLocation =async (req,res) =>{
           error : errors.array()
       })
   }
-  if(req.file){
-        data={
+    data={
             company_name : req.body.company_name,
             house_number : req.body.house_number,
             street : req.body.street,
             postal_code : req.body.postal_code,
             city : req.body.city,
-            location_image : req.file.filename,
             location : req.body.location,
             user : req.user._id
         }    
-    }else{
-        data={
-            company_name : req.body.company_name,
-            house_number : req.body.house_number,
-            street : req.body.street,
-            postal_code : req.body.postal_code,
-            city : req.body.city,
-            location : req.body.location,
-            user : req.user._id
-        }
-    }  
+        if(req.files !== null && typeof(req.files) != "undefined"){    
+    if( typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+        data.company_logo = req.files.company_logo[0].filename;
+    }
+    if(typeof(req.files.location_image) != "undefined" && req.files.location_image !== null){
+        data.location_image = req.files.location_image[0].filename;
+    }
+}
+    
+      
     await Location.findOne({_id:id,user:req.user._id}).exec((err,l)=>{
         if(err){
             return res.status(400).json({
                 message : "Something Went Wrong"
             })
         }
-        fs.unlink('./uploads/'+l.location_image, function (err) {
-            
-            console.log('File deleted!');
-        });
+        if(req.files !== null && typeof(req.files) != "undefined"){        
+        if(typeof(req.files.location_image) != "undefined" && req.files.location_image !== null){
+            fs.unlink('./uploads/location'+l.location_image, function (err) {
+                console.log('File deleted!');
+            });
+        }
+        if(typeof(req.files.company_logo) != "undefined" && req.files.company_logo !== null){
+            fs.unlink('./uploads/location'+l.company_logo, function (err) {
+                console.log('File deleted!');
+            });
+        }
+    }
     })    
 
     await Location.findOneAndUpdate(
