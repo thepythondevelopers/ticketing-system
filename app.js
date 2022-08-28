@@ -17,6 +17,7 @@ const userRoutes = require("./routes/user");
 const packageRoutes = require("./routes/package");
 const menuDropdownRoutes = require("./routes/menuDropdown");
 const locationRoutes = require("./routes/location");
+const categoryRoutes = require("./routes/category");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -48,6 +49,8 @@ app.use('/api',userRoutes);
 app.use('/api',packageRoutes);
 app.use('/api',menuDropdownRoutes);
 app.use('/api',locationRoutes);
+app.use('/api',categoryRoutes);
+
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)
 });
