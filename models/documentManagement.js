@@ -17,8 +17,13 @@ const documentManagementSchema = new Schema({
         ref: "User",
         required : true
     },
+    location:{
+        type : ObjectId,
+        ref: "Location",
+        required : true
+    },
     date :{
-        type : Number,
+        type : Date,
         required : true,
         trim : true
     },
@@ -32,7 +37,7 @@ const documentManagementSchema = new Schema({
         trim : true
     },
     calendar_reminder_choose_date:{
-        type:String,
+        type:Date,
         trim : true
     },
     note_item:{

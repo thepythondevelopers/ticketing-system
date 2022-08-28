@@ -1,0 +1,148 @@
+const DocumentManagement = require("../models/documentManagement");
+const {validationResult} = require("express-validator");
+var fs = require('fs');
+
+exports.createDocument = (req,res) =>{
+    const errors = validationResult(req);
+  if(!errors.isEmpty()){
+      return res.status(400).json({
+          error : errors.array()
+      })
+  }
+    data={
+        file_name : req.body.file_name,
+        category : req.body.category,
+        user : req.user._id, 
+        location : req.body.location,
+        date : req.body.date, 
+        upload_document : req.files.upload_document[0].filename,
+        calendar_reminder_interval : req.body.calendar_reminder_interval,
+        calendar_reminder_choose_date : req.body.calendar_reminder_choose_date,
+        note_item : req.body.note_item,
+        note_create_task : req.body.note_create_task
+    }    
+    
+    document =new DocumentManagement(data);
+    document.save((err,document)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Unable to save in db"
+            })
+        }
+        return res.json(document);
+    })
+}
+
+exports.updateDocument =async (req,res) =>{
+    let id = req.params.id;
+    const errors = validationResult(req);
+  if(!errors.isEmpty()){
+      return res.status(400).json({
+          error : errors.array()
+      })
+  }
+    data={
+        file_name : req.body.file_name,
+        category : req.body.category, 
+        location : req.body.location,
+        date : req.body.date, 
+        calendar_reminder_interval : req.body.calendar_reminder_interval,
+        calendar_reminder_choose_date : req.body.calendar_reminder_choose_date,
+        note_item : req.body.note_item,
+        note_create_task : req.body.note_create_task
+        }    
+        if(req.files !== null && typeof(req.files) != "undefined"){    
+    if( typeof(req.files.upload_document) != "undefined" && req.files.upload_document !== null){
+        data.upload_document = req.files.upload_document[0].filename;
+    }
+}
+    
+      
+    await DocumentManagement.findOne({_id:id,user:req.user._id}).exec((err,l)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Something Went Wrong"
+            })
+        }
+        if(req.files !== null && typeof(req.files) != "undefined"){        
+        if(typeof(req.files.upload_document) != "undefined" && req.files.upload_document !== null){
+            fs.unlink('./uploads/documents'+l.upload_document, function (err) {
+                console.log('File deleted!');
+            });
+        }
+    }
+    })    
+
+    await DocumentManagement.findOneAndUpdate(
+        {_id : id,user:req.user._id},
+        {$set : data},
+        {new: true},
+        (err,document) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+    
+            if(document===null){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+    
+            return res.json(document);
+        }
+        )
+}
+
+exports.getSingleDocument =  (req,res)=>{
+    let id = req.params.id;
+    DocumentManagement.findOne({_id:id,user:req.user._id}).exec((err,document)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Something Went Wrong"
+            })
+        }
+        return res.json(document);
+    })    
+}
+
+exports.getDocumentData = (req,res)=>{
+    DocumentManagement.find({user:req.user._id}).exec((err,document)=>{
+        if(err){
+            return res.status(400).json({
+                message : "No Data Found"
+            })
+        }
+        return res.json(document);
+    })    
+}
+
+
+exports.deleteDocument = (req,res) =>{
+    let id = req.params.id;
+    DocumentManagement.deleteOne(
+        {_id : id,user:req.user._id},
+        (err,document) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+            
+            if(document.deletedCount==1){
+                return res.json({id : id});
+            }
+            if(document.deletedCount==0){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+            return res.status(404).json({
+                message : "Something Went Wrong"
+            })
+        }
+        )
+  }

@@ -18,6 +18,7 @@ const packageRoutes = require("./routes/package");
 const menuDropdownRoutes = require("./routes/menuDropdown");
 const locationRoutes = require("./routes/location");
 const categoryRoutes = require("./routes/category");
+const documentManagementRoutes = require("./routes/documentManagement");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -33,6 +34,8 @@ app.use(express.static('uploads'));
 app.use('/uploads', express.static('uploads'));
 app.use(express.static('uploads/location')); 
 app.use('/uploads/location', express.static('uploads/location'));
+app.use(express.static('uploads/documents')); 
+app.use('/uploads/documents', express.static('uploads/documents'));
 const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
@@ -50,6 +53,7 @@ app.use('/api',packageRoutes);
 app.use('/api',menuDropdownRoutes);
 app.use('/api',locationRoutes);
 app.use('/api',categoryRoutes);
+app.use('/api',documentManagementRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)
