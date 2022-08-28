@@ -39,7 +39,7 @@ exports.verifyToken = async (req, res, next) => {
 
 exports.checkDragExist = async (req, res, next) => {
   
-drag = await Drag.findOne({user:req.user._id});
+drag = await Drag.findOne({user:req.user._id,location: req.body.location});
 if(drag!=null){
   return res.status(401).json({
     message : "Already Exist"

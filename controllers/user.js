@@ -1,9 +1,7 @@
 const User = require("../models/user");
-
 const {validationResult} = require("express-validator");
-
 require('dotenv').config();
-
+var fs = require('fs');
 
 exports.getUser =  (req,res)=>{
     User.findOne({_id:req.user._id}).select('-password').exec((err,user)=>{
