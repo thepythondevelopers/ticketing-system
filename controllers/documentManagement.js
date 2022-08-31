@@ -17,16 +17,20 @@ exports.createDocument = (req,res) =>{
         date : req.body.date, 
         upload_document : req.files.upload_document[0].filename,
         calendar_reminder_interval : req.body.calendar_reminder_interval,
-        calendar_reminder_choose_date : req.body.calendar_reminder_choose_date,
+        
         note_item : req.body.note_item,
         note_create_task : req.body.note_create_task
-    }    
+    }   
+    if( req.body.calendar_reminder_choose_date != "null"){
+        data.calendar_reminder_choose_date  = req.body.calendar_reminder_choose_date;
+    }
+     
     
     document =new DocumentManagement(data);
     document.save((err,document)=>{
         if(err){
             return res.status(400).json({
-                message : "Unable to save in db"
+                message : err
             })
         }
         return res.json(document);
@@ -47,10 +51,12 @@ exports.updateDocument =async (req,res) =>{
         location : req.body.location,
         date : req.body.date, 
         calendar_reminder_interval : req.body.calendar_reminder_interval,
-        calendar_reminder_choose_date : req.body.calendar_reminder_choose_date,
         note_item : req.body.note_item,
         note_create_task : req.body.note_create_task
         }    
+        if( req.body.calendar_reminder_choose_date != "null"){
+            data.calendar_reminder_choose_date  = req.body.calendar_reminder_choose_date;
+        }
         if(req.files !== null && typeof(req.files) != "undefined"){    
     if( typeof(req.files.upload_document) != "undefined" && req.files.upload_document !== null){
         data.upload_document = req.files.upload_document[0].filename;
