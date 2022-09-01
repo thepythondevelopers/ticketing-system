@@ -9,6 +9,14 @@ exports.createDocument = (req,res) =>{
           error : errors.array()
       })
   }
+  if(req.files && Object.entries(req.files).length === 0){
+    return res.status(400).json({
+        message : "Please upload document or document is not in right format"
+    })
+}
+
+
+
     data={
         file_name : req.body.file_name,
         category : req.body.category,
