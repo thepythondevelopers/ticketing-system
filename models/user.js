@@ -52,6 +52,10 @@ const userSchema = new Schema({
         type:String,
         trim : true
     },
+    password_reset_time:{
+        type:Date,
+        trim : true
+    },
     postal_code:{
         type:String,
         trim : true,

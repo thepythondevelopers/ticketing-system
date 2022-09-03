@@ -2,7 +2,7 @@ const Plan = require("../models/plan");
 const {validationResult} = require("express-validator");
 var fs = require('fs');
 
-exports.createDocument = (req,res) =>{
+exports.createPlan = (req,res) =>{
     const errors = validationResult(req);
   if(!errors.isEmpty()){
       return res.status(400).json({
@@ -45,7 +45,7 @@ exports.createDocument = (req,res) =>{
     })
 }
 
-exports.updateDocument =async (req,res) =>{
+exports.updatePlan =async (req,res) =>{
     let id = req.params.id;
     const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -79,7 +79,7 @@ exports.updateDocument =async (req,res) =>{
         }
         if(req.files !== null && typeof(req.files) != "undefined"){        
         if(typeof(req.files.upload_document) != "undefined" && req.files.upload_document !== null){
-            fs.unlink('./uploads/documents'+l.upload_document, function (err) {
+            fs.unlink('./uploads/plan'+l.upload_document, function (err) {
                 console.log('File deleted!');
             });
         }
@@ -109,9 +109,9 @@ exports.updateDocument =async (req,res) =>{
         )
 }
 
-exports.getSingleDocument =  (req,res)=>{
+exports.getSinglePlan =  (req,res)=>{
     let id = req.params.id;
-    DocumentManagement.findOne({_id:id,user:req.user._id}).exec((err,document)=>{
+    Plan.findOne({_id:id,user:req.user._id}).exec((err,document)=>{
         if(err){
             return res.status(400).json({
                 message : "Something Went Wrong"
@@ -121,9 +121,9 @@ exports.getSingleDocument =  (req,res)=>{
     })    
 }
 
-exports.getDocumentData = (req,res)=>{
+exports.getPlanData = (req,res)=>{
     const location = req.params.location_id;
-    DocumentManagement.find({user:req.user._id,location: location}).exec((err,document)=>{
+    Plan.find({user:req.user._id,location: location}).exec((err,document)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
@@ -134,9 +134,9 @@ exports.getDocumentData = (req,res)=>{
 }
 
 
-exports.deleteDocument = (req,res) =>{
+exports.deletePlan = (req,res) =>{
     let id = req.params.id;
-    DocumentManagement.deleteOne(
+    Plan.deleteOne(
         {_id : id,user:req.user._id},
         (err,document) => {
             if(err){

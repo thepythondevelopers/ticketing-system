@@ -19,7 +19,8 @@ const menuDropdownRoutes = require("./routes/menuDropdown");
 const locationRoutes = require("./routes/location");
 const categoryRoutes = require("./routes/category");
 const documentManagementRoutes = require("./routes/documentManagement");
-const plancategoryRoutes = require("./routes/Plancategory");
+const plancategoryRoutes = require("./routes/planCategory");
+const planRoutes = require("./routes/plan");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -58,6 +59,7 @@ app.use('/api',locationRoutes);
 app.use('/api',categoryRoutes);
 app.use('/api',documentManagementRoutes);
 app.use('/api',plancategoryRoutes);
+app.use('/api',planRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)

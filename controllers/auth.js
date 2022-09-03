@@ -154,7 +154,8 @@ exports.signin = (req,res) =>{
   token = guid.replace(/-/g,""); 
   
     content =  { 
-      password_reset_token: token
+      password_reset_token: token,
+      password_reset_time : Date.now()
     }
     User.findOne({email: req.body.email}).then(function  (user) {
      if (!user) {
@@ -201,7 +202,7 @@ exports.signin = (req,res) =>{
 
   exports.change_password = (req,res)=>{
     const password_reset_token = req.params.password_reset_token;
-    User.findOne({password_reset_token: password_reset_token}).then(function (user) {
+    User.findOne({password_reset_token: password_reset_token, password_reset_time: { $gt: new Date(Date.now() - 0*60*60 * 1000) }}).then(function (user) {
      if (!user) {
         res.json({error:'Token Expire or Incorrect'});
      } else { 
