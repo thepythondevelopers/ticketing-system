@@ -56,7 +56,6 @@ exports.updateDocument =async (req,res) =>{
     data={
         file_name : req.body.file_name,
         category : req.body.category, 
-        location : req.body.location,
         date : req.body.date, 
         calendar_reminder_interval : req.body.calendar_reminder_interval,
         note_item : req.body.note_item,
@@ -123,7 +122,8 @@ exports.getSingleDocument =  (req,res)=>{
 }
 
 exports.getDocumentData = (req,res)=>{
-    DocumentManagement.find({user:req.user._id}).exec((err,document)=>{
+    const location = req.params.location_id;
+    DocumentManagement.find({user:req.user._id,location: location}).exec((err,document)=>{
         if(err){
             return res.status(400).json({
                 message : "No Data Found"
