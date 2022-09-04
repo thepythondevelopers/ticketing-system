@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { check} = require("express-validator");
-const {createCategory,getCategoryData,getSingleCategoryData,updateCategory,deleteCategory} = require("../controllers/plancategory");
+const {createCategory,getCategoryData,getSingleCategoryData,updateCategory,deleteCategory} = require("../controllers/planCategory");
 const {verifyToken} = require("../middleware/auth");
 
 
