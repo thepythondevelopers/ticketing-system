@@ -178,7 +178,7 @@ exports.signin = (req,res) =>{
                 })
             }
           //url = process.env.BASE_URL+'api/confirm-password/'
-      url = 'http://localhost:8000/reset-password/'+token
+      url = 'https://enmel.pamsar.com/reset-password/'+token
       try {
         await sendGridMail.send(forgetpassword_email(req.body.email,url));
        

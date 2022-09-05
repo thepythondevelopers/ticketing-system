@@ -29,7 +29,7 @@ const storage = multer.diskStorage({
 router.post("/create-plan",verifyToken,upload.fields([{name:'upload_document',maxCount:1}]),createPlan);
 router.put("/update-plan/:id",verifyToken,upload.fields([{name:'upload_document',maxCount:1}]),updatePlan);
 router.get("/get-plan/:id",verifyToken,getSinglePlan);
-router.get("/get-plan-data.:location_id",verifyToken,getPlanData);
+router.get("/get-plan-data/:location_id",verifyToken,getPlanData);
 router.delete("/delete-plan/:id",verifyToken,deletePlan);
   
 module.exports = router;
