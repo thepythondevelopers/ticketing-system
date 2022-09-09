@@ -10,7 +10,7 @@ const planSchema = new Schema({
     category:{
         type : ObjectId,
         ref: "planCategory",
-        required : true
+      //  required : true
     },
     user :{
         type : ObjectId,
@@ -28,6 +28,11 @@ const planSchema = new Schema({
         trim : true
     },
     upload_document:{
+        type:String,
+        required : true,
+        trim : true
+    },
+    document_original_name:{
         type:String,
         required : true,
         trim : true

@@ -20,6 +20,9 @@ exports.createLocation = (req,res) =>{
         location_image : location_image,
         location : req.body.location,
         company_logo : company_logo,
+        no_of_members : req.body.no_of_members,
+        percentage : req.body.percentage,
+        note : req.body.note,
         user : req.user._id
     }    
     
@@ -49,6 +52,9 @@ exports.updateLocation =async (req,res) =>{
             postal_code : req.body.postal_code,
             city : req.body.city,
             location : req.body.location,
+            no_of_members : req.body.no_of_members,
+            percentage : req.body.percentage,
+            note : req.body.note,
             user : req.user._id
         }    
         if(req.files !== null && typeof(req.files) != "undefined"){    

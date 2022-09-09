@@ -24,6 +24,7 @@ exports.createPlan = (req,res) =>{
         location : req.body.location,
         date : req.body.date, 
         upload_document : req.files.upload_document[0].filename,
+        document_original_name : req.files.upload_document[0].originalname,
         calendar_reminder_interval : req.body.calendar_reminder_interval,
         
         note_item : req.body.note_item,
@@ -67,6 +68,7 @@ exports.updatePlan =async (req,res) =>{
         if(req.files !== null && typeof(req.files) != "undefined"){    
     if( typeof(req.files.upload_document) != "undefined" && req.files.upload_document !== null){
         data.upload_document = req.files.upload_document[0].filename;
+        data.document_original_name = req.files.upload_document[0].originalname;
     }
 }
     

@@ -40,6 +40,18 @@ const locationSchema = new Schema({
         type:String,
         trim : true
     },
+    no_of_members:{
+        type: Number,
+        trim : true
+    },
+    percentage:{
+        type: Number,
+        trim : true
+    },
+    note:{
+        type: String,
+        trim : true
+    },
     user :{
         type : ObjectId,
         ref: "User",
