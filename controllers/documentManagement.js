@@ -19,7 +19,6 @@ exports.createDocument = (req,res) =>{
 
     data={
         file_name : req.body.file_name,
-        category : req.body.category,
         user : req.user._id, 
         location : req.body.location,
         date : req.body.date, 
@@ -30,6 +29,9 @@ exports.createDocument = (req,res) =>{
         note_item : req.body.note_item,
         note_create_task : req.body.note_create_task
     }   
+    if( req.body.category != "null"){
+        data.category  = req.body.category;
+    }
     if( req.body.calendar_reminder_choose_date != "null"){
         data.calendar_reminder_choose_date  = req.body.calendar_reminder_choose_date;
     }
@@ -56,12 +58,15 @@ exports.updateDocument =async (req,res) =>{
   }
     data={
         file_name : req.body.file_name,
-        category : req.body.category, 
         date : req.body.date, 
         calendar_reminder_interval : req.body.calendar_reminder_interval,
         note_item : req.body.note_item,
         note_create_task : req.body.note_create_task
         }    
+        if( req.body.category != "null"){
+            data.category  = req.body.category;
+        }
+        
         if( req.body.calendar_reminder_choose_date != "null"){
             data.calendar_reminder_choose_date  = req.body.calendar_reminder_choose_date;
         }
