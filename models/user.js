@@ -81,12 +81,10 @@ const userSchema = new Schema({
     },
     avatar:{
         type:String,
-        required : true,
         trim : true
     },
     company_logo:{
         type:String,
-        required : true,
         trim : true
     },
     status:{
