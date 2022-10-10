@@ -21,6 +21,7 @@ const categoryRoutes = require("./routes/category");
 const documentManagementRoutes = require("./routes/documentManagement");
 const plancategoryRoutes = require("./routes/planCategory");
 const planRoutes = require("./routes/plan");
+const officerRoutes = require("./routes/officer");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -60,6 +61,7 @@ app.use('/api',categoryRoutes);
 app.use('/api',documentManagementRoutes);
 app.use('/api',plancategoryRoutes);
 app.use('/api',planRoutes);
+app.use('/api',officerRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)
