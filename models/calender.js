@@ -22,6 +22,10 @@ const calenderSchema = new Schema({
         required : true,
         trim : true
     },
+    file_upload:{
+        type:String,
+        trim : true
+    },
     location :{
         type : ObjectId,
         ref: "Location",

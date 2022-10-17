@@ -17,6 +17,10 @@ const sidebarSchema = new Schema({
         ref: "User",
         required : true
     },
+    file_upload:{
+        type:String,
+        trim : true
+    },
     checked:{
         type:Boolean,
         default:0 //0=>False 1=>True

@@ -1,17 +1,14 @@
 const Sidebar = require("../models/sidebar");
 const {validationResult} = require("express-validator");
-
+var fs = require('fs');
 exports.createSidebar = (req,res) =>{
-    const errors = validationResult(req);
-  if(!errors.isEmpty()){
-      return res.status(400).json({
-          error : errors.array()
-      })
-  }
+
+  file_upload = (typeof(req.files.file_upload) != "undefined" && req.files.file_upload !== null) ? req.files.file_upload[0].filename : null;
     data={
         title : req.body.title,
         user : req.user._id,
-        location : req.body.location
+        location : req.body.location,
+        file_upload : file_upload
     }    
     sidebar =new Sidebar(data);
     sidebar.save((err,sidebar)=>{
@@ -48,39 +45,58 @@ exports.getCheckedSidebarData = (req,res)=>{
     })    
 }
 
-exports.updateSidebar = (req,res) =>{
-    id = req.params.id;
-    const errors = validationResult(req);
-  if(!errors.isEmpty()){
-      return res.status(400).json({
-          error : errors.array()
-      })
-  }
-  data = {
+exports.updateSidebar = async(req,res) =>{
+    let id = req.params.id;
+
+    data = {
     title : req.body.title,
     checked : req.body.checked
   }
-  Sidebar.findOneAndUpdate(
-    {_id : id,user:req.user._id},
-    {$set : data},
-    {new: true},
-    (err,calender) => {
-        if(err){
-            return res.status(404).json({
-                error : err
-            })
-        
+    if(req.files !== null && typeof(req.files) != "undefined"){    
+        if( typeof(req.files.file_upload) != "undefined" && req.files.file_upload !== null){
+            data.file_upload = req.files.file_upload[0].filename;
         }
-
-        if(calender===null){
-            return res.status(404).json({
-                message : "No Data Found"
-            })
-        }
-
-        return res.json(calender);
     }
-    )   
+    
+    if(req.files !== null && typeof(req.files) != "undefined"){        
+        if(typeof(req.files.file_upload) != "undefined" && req.files.file_upload !== null){
+        await Sidebar.findOne({_id:id,user:req.user._id}).exec((err,s)=>{
+            if(err){
+                return res.status(400).json({
+                    message : "Something Went Wrong"
+                })
+            }
+        
+            fs.unlink('./uploads/sidebar'+s.file_upload, function (err) {
+                console.log('File deleted!');
+            });
+        
+        })  
+        }
+        
+    }  
+
+    await Sidebar.findOneAndUpdate(
+        {_id : id,user:req.user._id},
+        {$set : data},
+        {new: true},
+        (err,sidebar) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+    
+            if(sidebar===null){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+    
+            return res.json(sidebar);
+        }
+        )   
 }
 
 exports.deleteSidebar = (req,res) =>{

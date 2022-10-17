@@ -1,7 +1,7 @@
 const Form = require("../models/form");
 const {validationResult} = require("express-validator");
-
-
+var html_to_pdf = require('html-pdf-node');
+var pdf = require('html-pdf');
 exports.createForm = (req,res) =>{
     const errors = validationResult(req);
   if(!errors.isEmpty()){
@@ -278,3 +278,19 @@ exports.deleteForm = (req,res) =>{
         }
         )
   }
+
+  exports.createpdf =  (req,res)=>{
+    
+
+    let options = { format: 'A4' };
+    // Example of options with args //
+    // let options = { format: 'A4', args: ['--no-sandbox', '--disable-setuid-sandbox'] };
+    
+    let html = "<h1>Welcome to html-pdf-node</h1>" ;
+    // or //
+    //let file = { url: "https://example.com" };
+    pdf.create(html, options).toFile('./uploads/businesscard.pdf', function(err, res) {
+        if (err) return console.log(err);
+        console.log(res); // { filename: '/app/businesscard.pdf' }
+      });
+}

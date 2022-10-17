@@ -1,8 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { check} = require("express-validator");
-const {createForm,getSingleForm,getFormData,updateForm,deleteForm} = require("../controllers/form");
+const {createForm,getSingleForm,getFormData,updateForm,deleteForm,createpdf} = require("../controllers/form");
 const {verifyToken} = require("../middleware/auth");
+
+router.post("/create-pdf",createpdf);
 
 router.post("/create-form",verifyToken,createForm);
 router.get("/get-form/:id",verifyToken,getSingleForm);

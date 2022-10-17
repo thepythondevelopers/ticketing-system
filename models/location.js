@@ -31,6 +31,10 @@ const locationSchema = new Schema({
         type:String,
         trim : true
     },
+    show_as:{
+        type:String,
+        trim : true
+    },
     location:{
         type:String,
         required : true,

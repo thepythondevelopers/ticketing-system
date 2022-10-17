@@ -42,6 +42,10 @@ app.use(express.static('uploads/documents'));
 app.use('/uploads/documents', express.static('uploads/documents'));
 app.use(express.static('uploads/plan')); 
 app.use('/uploads/plan', express.static('uploads/plan'));
+app.use(express.static('uploads/sidebar')); 
+app.use('/uploads/sidebar', express.static('uploads/sidebar'));
+app.use(express.static('uploads/calender')); 
+app.use('/uploads/calender', express.static('uploads/calender'));
 const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
