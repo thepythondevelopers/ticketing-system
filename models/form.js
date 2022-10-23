@@ -156,11 +156,11 @@ const formSchema = new Schema({
             required : true
         }, 
         other_extingushing_agent_name: {
-            type:Boolean,
+            type:String,
             required : true
         },
         firepost_name: {
-            type:Boolean,
+            type:String,
             required : true
         },
         during_file_hazardas_work_name: {
@@ -168,7 +168,7 @@ const formSchema = new Schema({
             required : true
         },
         fire_guard_name: {
-            type:Boolean,
+            type:String,
             required : true
         },
         after_completion_of_fire_hazardus: {
