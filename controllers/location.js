@@ -31,7 +31,7 @@ exports.createLocation = (req,res) =>{
     location.save((err,location)=>{
         if(err){
             return res.status(400).json({
-                message : "Unable to sabe in db"
+                message : "Unable to save in db"
             })
         }
         return res.json(location);

@@ -40,10 +40,6 @@ const formSchema = new Schema({
         other:  {
             type:Boolean,
             required : true
-        },
-        other_text:  {
-            type:String,
-            required : true
         }
     },
     places_of_work : {
@@ -95,10 +91,6 @@ const formSchema = new Schema({
             type:Boolean,
             required : true
         },
-        other_text: {
-            type:String,
-            required : true
-        },
         name: {
             type:String,
             required : true
@@ -130,11 +122,7 @@ const formSchema = new Schema({
         other_agent: {
             type:Boolean,
             required : true
-        }, 
-        other_agent_name: {
-            type:String,
-            required : true
-        }, 
+        },  
         fire_blanket: {
             type:Boolean,
             required : true
@@ -155,10 +143,6 @@ const formSchema = new Schema({
             type:Boolean,
             required : true
         }, 
-        other_extingushing_agent_name: {
-            type:String,
-            required : true
-        },
         firepost_name: {
             type:String,
             required : true
@@ -211,10 +195,6 @@ const formSchema = new Schema({
         },
         other: {
             type:Boolean,
-            required : true
-        },
-        other_text: {
-            type:String,
             required : true
         },
         name: {
