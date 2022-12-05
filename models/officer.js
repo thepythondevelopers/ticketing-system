@@ -9,102 +9,80 @@ const officerSchema = new Schema({
     },
     managing_director : {
         name: {
-            type: String,
-            required : true
+            type: String
         },
         first_name:{
-            type: String,
-            required : true
+            type: String
             },
         contact_number:{
-            type: Number,
-            required : true
+            type: Number
         },
         email:{
-            type: String,
-            required : true
+            type: String
         }
     },
     deputy_managing_director : {
         name: {
-            type: String,
-            required : true
+            type: String
         },
         first_name:{
-            type: String,
-            required : true
+            type: String
             },
         contact_number:{
-            type: Number,
-            required : true
+            type: Number
         },
         email:{
-            type: String,
-            required : true
+            type: String
         }
     },
     object_director : {
         name: {
-            type: String,
-            required : true
+            type: String
         },
         first_name:{
-            type: String,
-            required : true
+            type: String
             },
         contact_number:{
-            type: Number,
-            required : true
+            type: Number
         },
         email:{
-            type: String,
-            required : true
+            type: String
         }
     },
     responsible_fire_protection : {
         name: {
-            type: String,
-            required : true
+            type: String
         },
         first_name:{
-            type: String,
-            required : true
+            type: String
             },
         contact_number:{
-            type: Number,
-            required : true
+            type: Number
         },
         email:{
-            type: String,
-            required : true
+            type: String
         }
     },
     fire_protection_officer : {
         name: {
-            type: String,
-            required : true
+            type: String
         },
         first_name:{
-            type: String,
-            required : true
+            type: String
             },
         contact_number:{
-            type: Number,
-            required : true
+            type: Number
         },
         email:{
-            type: String,
-            required : true
+            type: String
         }
     },
     helpers : {
         number_target:{
-            type: Number,
-            required : true
+            type: Number
         },
         actual_target:{
-            type: Number,
-            required : true
+            type: Number
         },
     },
     
