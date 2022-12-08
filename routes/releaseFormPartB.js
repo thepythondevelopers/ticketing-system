@@ -31,4 +31,5 @@ const storage = multer.diskStorage({
   router.get("/get-form-part-b/:id",verifyToken,getSingleFormB);
   router.get("/get-form-part-b-data",verifyToken,getFormBData);
   router.delete("/delete-form-part-b/:id",verifyToken,deleteFormB);
-module.exports = router;
+
+  module.exports = router;
