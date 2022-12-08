@@ -26,6 +26,7 @@ const formRoutes = require("./routes/form");
 const evacuationRoutes = require("./routes/evacuation");
 const releaseFormPartBRoutes = require("./routes/releaseFormPartB");
 const releaseFormPartCRoutes = require("./routes/releaseFormPartC");
+const uploadTemplateRoutes = require("./routes/uploadTemplate");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -51,6 +52,8 @@ app.use(express.static('uploads/calender'));
 app.use('/uploads/calender', express.static('uploads/calender'));
 app.use(express.static('uploads/releaseform')); 
 app.use('/uploads/releaseform', express.static('uploads/releaseform'));
+app.use(express.static('uploads/template')); 
+app.use('/uploads/template', express.static('uploads/template'));
 const port = process.env.PORT || 8000;
 
 app.use(bodyParser.json());
@@ -76,6 +79,7 @@ app.use('/api',formRoutes);
 app.use('/api',evacuationRoutes);
 app.use('/api',releaseFormPartBRoutes);
 app.use('/api',releaseFormPartCRoutes);
+app.use('/api',uploadTemplateRoutes);
 
 app.listen(port,()=>{
     console.log(`Server is running at port ${port}`)

@@ -119,3 +119,55 @@ await ReleaseFormPartB.findOne({_id:id,user:req.user._id}).exec((err,l)=>{
         }
         )
 }
+
+
+exports.getSingleFormB =  (req,res)=>{
+    let id = req.params.id;
+    ReleaseFormPartB.findOne({_id:id,user:req.user._id}).exec((err,location)=>{
+        if(err){
+            return res.status(400).json({
+                message : "Something Went Wrong"
+            })
+        }
+        return res.json(location);
+    })    
+}
+
+exports.getFormBData = (req,res)=>{
+    ReleaseFormPartB.find({user:req.user._id}).exec((err,location)=>{
+        if(err){
+            return res.status(400).json({
+                message : "No Data Found"
+            })
+        }
+        return res.json(location);
+    })    
+}
+
+
+exports.deleteFormB = (req,res) =>{
+    let id = req.params.id;
+    ReleaseFormPartB.deleteOne(
+        {_id : id,user:req.user._id},
+        (err,location) => {
+            if(err){
+                return res.status(404).json({
+                    error : err
+                })
+            
+            }
+            
+            if(location.deletedCount==1){
+                return res.json({id : id});
+            }
+            if(location.deletedCount==0){
+                return res.status(404).json({
+                    message : "No Data Found"
+                })
+            }
+            return res.status(404).json({
+                message : "Something Went Wrong"
+            })
+        }
+        )
+  }
