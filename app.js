@@ -28,6 +28,7 @@ const releaseFormPartBRoutes = require("./routes/releaseFormPartB");
 const releaseFormPartCRoutes = require("./routes/releaseFormPartC");
 const uploadTemplateRoutes = require("./routes/uploadTemplate");
 const ticketingRoutes = require("./routes/ticketing");
+const fireProtectionReportRoutes = require("./routes/fireProtectionReport");
 //Connection
 mongoose.connect(process.env.DATABASE,{
     useNewUrlParser : true,
@@ -84,6 +85,7 @@ app.use('/api',evacuationRoutes);
 app.use('/api',releaseFormPartBRoutes);
 app.use('/api',releaseFormPartCRoutes);
 app.use('/api',uploadTemplateRoutes);
+app.use('/api',fireProtectionReportRoutes);
 //app.use('/api',ticketingRoutes);
 
 app.listen(port,()=>{
